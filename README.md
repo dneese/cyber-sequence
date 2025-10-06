@@ -6,8 +6,8 @@ A cyberpunk memory game with neon visuals and procedural music.\
 English • Українська\
 Play Now • Features • How to Play • Installation
 
-![CYBER SEQUENCE // 2085](assets/gameplay.png)\
-*(Завантаж скріншот гри як* `assets/gameplay.png`*)*
+![CYBER SEQUENCE // 2085](Screenshot.png)\
+
 
 ---
 
@@ -36,7 +36,7 @@ Play Now • Features • How to Play • Installation
 
 ## 🚀 Play Online / Грайте онлайн {#play-online}
 
-- **Online**: Play Demo *(Активуй GitHub Pages у налаштуваннях)*
+- **Online**: Play Demo https://dneese.github.io/cyber-sequence/
 - **Local**: Open `index.html` in a browser / Відкрий `index.html` у браузері
 
 ## 💻 Installation / Інсталяція {#installation}
@@ -46,8 +46,7 @@ Play Now • Features • How to Play • Installation
 git clone https://github.com/dneese/cyber-sequence.git
 cd cyber-sequence
 
-# Open index.html or run server / Відкрий index.html або запусти сервер
-python -m http.server 8000  # Visit http://localhost:8000
+# Open index.html or run server / Відкрий index.html або запусти сервhttps://dneese.github.io/cyber-sequence/m http.server 8000  # Visit http://localhost:8000
 ```
 
 ## 🤝 Contributing / Співпраця {#contributing}
@@ -58,11 +57,11 @@ Fork, make changes, submit a PR! Ideas: new languages, themes, music.\
 ## 📝 License / Ліцензія {#license}
 
 MIT License — see LICENSE.\
-Copyright (c) 2025 David Neese *(заміни на своє ім’я)*.
+Copyright (c) 2025 DNeese.
 
 ## 👨‍💻 Author / Автор {#author}
 
-David Neese *(заміни на своє)*
+DNeese
 
 Made with ❤️ in neon 2085 / Зроблено з ❤️ у неоні 2085.
 
