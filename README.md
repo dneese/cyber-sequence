@@ -12,7 +12,7 @@
 
 [Play Now](#-play-online) • [Features](#-features) • [Installation](#-installation) • [How to Play](#-how-to-play)
 
-<img src="https://via.placeholder.com/800x400/05001c/0066FF?text=CYBER+SEQUENCE+//+2085" alt="Game Preview" width="600">
+<img src="Screenshot.png" alt="Game Preview" width="600">
 
 </div>
 
