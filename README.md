@@ -77,7 +77,7 @@
 ## 🚀 Play Online
 
 ### GitHub Pages
-Visit the live demo: **[Play Cyber Sequence](https://yourusername.github.io/cyber-sequence)**
+Visit the live demo: **[Play Cyber Sequence](https://dneese.github.io/cyber-sequence/)**
 
 ### Local Play
 Simply download `index.html` and open it in any modern web browser. No server required!
@@ -89,7 +89,7 @@ Simply download `index.html` and open it in any modern web browser. No server re
 ### Quick Start
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/cyber-sequence.git
+git clone https://github.com/dneese/cyber-sequence.git
 
 # Navigate to the folder
 cd cyber-sequence
@@ -224,9 +224,9 @@ copies of the Software...
 
 ## 👨‍💻 Author
 
-**[Your Name]**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Website: [yourwebsite.com](https://yourwebsite.com)
+**[Dneese]**
+- GitHub: [@Dneese](https://github.com/Dneese)
+- Website: [jukebox.pp.ua](https://jukebox.pp.ua)
 
 ---
 
@@ -275,7 +275,7 @@ Currently there are no known critical bugs. If you find any issues, please [repo
 <img src="https://via.placeholder.com/600x400/05001c/0066FF?text=Main+Menu" alt="Main Menu" width="500">
 
 ### Gameplay
-<img src="https://via.placeholder.com/600x400/05001c/00FF66?text=Gameplay" alt="Gameplay" width="500">
+<img src="Screenshot.png" alt="Gameplay" width="500">
 
 ### Game Over
 <img src="https://via.placeholder.com/600x400/05001c/FF0033?text=Game+Over" alt="Game Over" width="500">
