@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
+    <title>CYBER SEQUENCE // 2085</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;700&display=swap');
+        
+        :root {
+            --neon-blue: #0066FF;
+            --neon-red: #FF0033;
+            --neon-green: #00FF66;
+            --neon-yellow: #FFFF00;
+            --deep-space: #05001c;
+        }
+        
+        body {
+            background: var(--deep-space);
+            overflow: hidden;
+            font-family: 'Rajdhani', 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            text-align: center;
+            padding: 15px;
+            
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(157, 0, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(0, 102, 255, 0.05) 0%, transparent 40%),
+                linear-gradient(135deg, #05001c 0%, #0a0030 100%);
+        }
+
+        #gameContainer {
+            background: rgba(5, 0, 20, 0.9);
+            padding: 25px;
+            border: 1px solid rgba(0, 102, 255, 0.4);
+            box-shadow: 
+                0 0 20px rgba(0, 102, 255, 0.3),
+                inset 0 0 15px rgba(0, 102, 255, 0.1);
+            border-radius: 15px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 10;
+        }
+
+        #langSwitch {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 102, 255, 0.2);
+            border: 1px solid rgba(0, 102, 255, 0.4);
+            border-radius: 20px;
+            padding: 5px;
+            display: flex;
+            gap: 5px;
+            z-index: 20;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: rgba(0, 102, 255, 0.6);
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            touch-action: manipulation;
+        }
+
+        .lang-btn.active {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 10px rgba(0, 102, 255, 0.6);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: var(--neon-blue);
+        }
+        
+        h1 {
+            color: transparent;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-red), var(--neon-green), var(--neon-yellow));
+            -webkit-background-clip: text;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            letter-spacing: 2px;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        #padGrid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 15px;
+            width: 280px;
+            height: 280px;
+            margin: 20px auto;
+            background: rgba(5, 0, 15, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 102, 255, 0.3);
+            touch-action: manipulation;
+        }
+
+        .pad {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        #pad0 { 
+            background: linear-gradient(135deg, #0066CC, #0088FF);
+            box-shadow: 
+                0 0 15px rgba(0, 102, 255, 0.5),
+                inset 0 0 10px rgba(0, 102, 255, 0.2);
+        }
+        #pad1 { 
+            background: linear-gradient(135deg, #FF0022, #FF3366);
+            box-shadow: 
+                0 0 15px rgba(255, 0, 51, 0.5),
+                inset 0 0 10px rgba(255, 0, 51, 0.2);
+        }
+        #pad2 { 
+            background: linear-gradient(135deg, #00CC44, #00FF66);
+            box-shadow: 
+                0 0 15px rgba(0, 204, 68, 0.5),
+                inset 0 0 10px rgba(0, 204, 68, 0.2);
+        }
+        #pad3 { 
+            background: linear-gradient(135deg, #FFCC00, #FFFF33);
+            box-shadow: 
+                0 0 15px rgba(255, 204, 0, 0.5),
+                inset 0 0 10px rgba(255, 204, 0, 0.2);
+        }
+        
+        .pad.active { 
+            transform: scale(1.08);
+            transition: all 0.1s ease-out;
+        }
+
+        .pad.welcome-flash {
+            animation: welcome-flash 0.8s ease-in-out infinite;
+        }
+        
+        @keyframes welcome-flash {
+            0%, 100% { 
+                transform: scale(1);
+                opacity: 1;
+                box-shadow: 0 0 20px currentColor;
+            }
+            50% { 
+                transform: scale(1.1);
+                opacity: 0.8;
+                box-shadow: 0 0 40px currentColor;
+            }
+        }
+
+        .pad.game-over-flash {
+            animation: game-over-flash 0.6s ease-in-out 3;
+        }
+        
+        @keyframes game-over-flash {
+            0%, 100% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% { 
+                transform: scale(1.15);
+                opacity: 0.6;
+            }
+        }
+
+        #pad0.active { 
+            box-shadow: 
+                0 0 25px #0066FF, 
+                0 0 50px #0066FF,
+                inset 0 0 20px rgba(0, 102, 255, 0.6);
+        }
+        #pad1.active { 
+            box-shadow: 
+                0 0 25px #FF0033, 
+                0 0 50px #FF0033,
+                inset 0 0 20px rgba(255, 0, 51, 0.6);
+        }
+        #pad2.active { 
+            box-shadow: 
+                0 0 25px #00FF66, 
+                0 0 50px #00FF66,
+                inset 0 0 20px rgba(0, 255, 102, 0.6);
+        }
+        #pad3.active { 
+            box-shadow: 
+                0 0 25px #FFFF00, 
+                0 0 50px #FFFF00,
+                inset 0 0 20px rgba(255, 255, 0, 0.6);
+        }
+
+        #infoPanel { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            padding: 12px 20px; 
+            background: rgba(10, 0, 30, 0.6);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 102, 255, 0.2);
+        }
+        
+        #lives { 
+            color: #FF0033; 
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        #message { 
+            font-size: 1.1em;
+            margin: 15px 0;
+            min-height: 25px;
+            color: var(--neon-green);
+            font-weight: 500;
+        }
+        
+        .cyber-button {
+            background: linear-gradient(135deg, var(--neon-red), #FF0066);
+            color: #00001a;
+            border: none;
+            padding: 12px 25px;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 0, 51, 0.4);
+            border-radius: 8px;
+            transition: all 0.2s;
+            margin-top: 15px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1em;
+            touch-action: manipulation;
+            min-width: 140px;
+        }
+
+        .error-shake { 
+            animation: shake 0.4s ease-in-out; 
+        }
+        
+        @keyframes shake { 
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .success-glow { 
+            animation: pulse-success 1s ease-in-out; 
+        }
+        
+        @keyframes pulse-success { 
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 102, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(0, 255, 102, 0.6); }
+        }
+
+        @media (max-width: 380px) {
+            #gameContainer {
+                padding: 20px;
+            }
+            
+            #padGrid {
+                width: 260px;
+                height: 260px;
+                gap: 12px;
+                padding: 15px;
+            }
+            
+            .cyber-button {
+                min-width: 120px;
+                padding: 10px 20px;
+            }
+            
+            h1 {
+                font-size: 1.4em;
+            }
+
+            #langSwitch {
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="langSwitch">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="uk">UK</button>
+        </div>
+
+        <h1 id="gameTitle">CYBER SEQUENCE // 2085</h1>
+        
+        <div id="infoPanel">
+            <div><span id="levelLabel">Level</span>: <span id="score">0</span></div>
+            <div><span id="livesLabel">Lives</span>: <span id="lives">5</span></div>
+        </div>
+        
+        <div id="padGrid">
+            <div class="pad" id="pad0"></div>
+            <div class="pad" id="pad1"></div>
+            <div class="pad" id="pad2"></div>
+            <div class="pad" id="pad3"></div>
+        </div>
+        
+        <div id="message">Press 'Start' to begin the game</div>
+        
+        <button id="startButton" class="cyber-button">START SYSTEM</button>
+    </div>
+
+    <script>
+        const PADS = [0, 1, 2, 3];
+        const FREQUENCIES = [932.33, 830.61, 739.99, 659.25];
+        const BASE_DELAY = 120;
+
+        // Language translations
+        const translations = {
+            en: {
+                title: 'CYBER SEQUENCE // 2085',
+                level: 'Level',
+                lives: 'Lives',
+                start: 'START SYSTEM',
+                restart: 'RESTART',
+                welcome: "Press 'Start' to begin the game",
+                listening: 'Listen to the sequence...',
+                yourTurn: 'Your turn! Repeat the sequence...',
+                success: 'Success! Next level activated.',
+                mistake: 'MISTAKE! Lives:',
+                repeating: 'Repeating...',
+                repeatSequence: 'Repeating sequence...',
+                gameOver: 'GAME OVER! Level:'
+            },
+            uk: {
+                title: 'КІБЕРНЕТИЧНА ПОСЛІДОВНІСТЬ // 2085',
+                level: 'Рівень',
+                lives: 'Життя',
+                start: 'СТАРТ СИСТЕМИ',
+                restart: 'ПЕРЕЗАПУСК',
+                welcome: "Натисніть 'Старт' для початку гри",
+                listening: 'Слухаю послідовність...',
+                yourTurn: 'Твій хід! Повтори послідовність...',
+                success: 'Успіх! Наступний рівень активований.',
+                mistake: 'ПОМИЛКА! Життя:',
+                repeating: 'Повторюю...',
+                repeatSequence: 'Повторюю послідовність...',
+                gameOver: 'ГРА ЗАВЕРШЕНА! Рівень:'
+            }
+        };
+
+        let currentLang = 'en';
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            document.getElementById('gameTitle').textContent = t.title;
+            document.getElementById('levelLabel').textContent = t.level;
+            document.getElementById('livesLabel').textContent = t.lives;
+            
+            if (!gameActive) {
+                document.getElementById('message').textContent = t.welcome;
+                document.getElementById('startButton').textContent = t.start;
+            } else if (isPlayersTurn) {
+                document.getElementById('message').textContent = t.yourTurn;
+            }
+
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            document.documentElement.lang = lang;
+        }
+
+        // Audio System
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        let isMusicPlaying = false;
+        let musicInterval = null;
+
+        function createReverb(context) {
+            const convolver = context.createConvolver();
+            const reverbTime = 2;
+            const length = context.sampleRate * reverbTime;
+            const impulse = context.createBuffer(2, length, context.sampleRate);
+            const left = impulse.getChannelData(0);
+            const right = impulse.getChannelData(1);
+
+            for (let i = 0; i < length; i++) {
+                const decay = Math.pow(1 - i / length, 1.5);
+                left[i] = (Math.random() * 2 - 1) * decay;
+                right[i] = (Math.random() * 2 - 1) * decay;
+            }
+
+            convolver.buffer = impulse;
+            return convolver;
+        }
+
+        const reverb = createReverb(ctx);
+
+        const mainMelody = [
+            { freq: 174.61, duration: 0.3, type: 'sawtooth' },
+            { freq: 233.08, duration: 0.3, type: 'sawtooth' },
+            { freq: 349.23, duration: 0.3, type: 'sawtooth' },
+            { freq: 311.13, duration: 0.15, type: 'sawtooth' },
+            { freq: 349.23, duration: 0.15, type: 'sawtooth' },
+            { freq: 277.18, duration: 0.3, type: 'sawtooth' },
+            { freq: 233.08, duration: 0.3, type: 'sawtooth' },
+            { freq: 207.65, duration: 0.3, type: 'sawtooth' },
+            { freq: 261.63, duration: 0.3, type: 'sawtooth' },
+            { freq: 311.13, duration: 0.15, type: 'sawtooth' },
+            { freq: 349.23, duration: 0.15, type: 'sawtooth' },
+            { freq: 415.30, duration: 0.3, type: 'sawtooth' },
+            { freq: 349.23, duration: 0.3, type: 'sawtooth' },
+            { freq: 311.13, duration: 0.3, type: 'sawtooth' },
+            { freq: 277.18, duration: 0.3, type: 'sawtooth' },
+            { freq: 349.23, duration: 0.2, type: 'sawtooth' },
+            { freq: 415.30, duration: 0.2, type: 'sawtooth' },
+            { freq: 466.16, duration: 0.2, type: 'sawtooth' },
+            { freq: 523.25, duration: 0.2, type: 'sawtooth' },
+            { freq: 466.16, duration: 0.15, type: 'sawtooth' },
+            { freq: 415.30, duration: 0.15, type: 'sawtooth' },
+            { freq: 349.23, duration: 0.3, type: 'sawtooth' },
+            { freq: 311.13, duration: 0.3, type: 'sawtooth' },
+            { freq: 233.08, duration: 0.4, type: 'sawtooth' },
+            { freq: 0, duration: 0.1, type: 'sawtooth' },
+            { freq: 207.65, duration: 0.4, type: 'sawtooth' },
+            { freq: 174.61, duration: 0.4, type: 'sawtooth' },
+            { freq: 0, duration: 0.1, type: 'sawtooth' },
+            { freq: 261.63, duration: 0.3, type: 'sawtooth' },
+            { freq: 311.13, duration: 0.3, type: 'sawtooth' }
+        ];
+
+        const counterpoint = [
+            { freq: 523.25, duration: 0.6, type: 'sine' },
+            { freq: 622.25, duration: 0.6, type: 'sine' },
+            { freq: 698.46, duration: 0.6, type: 'sine' },
+            { freq: 622.25, duration: 0.6, type: 'sine' },
+            { freq: 466.16, duration: 0.6, type: 'sine' },
+            { freq: 523.25, duration: 0.6, type: 'sine' },
+            { freq: 622.25, duration: 0.6, type: 'sine' },
+            { freq: 830.61, duration: 0.6, type: 'sine' },
+            { freq: 932.33, duration: 0.6, type: 'sine' },
+            { freq: 830.61, duration: 0.6, type: 'sine' },
+            { freq: 698.46, duration: 0.6, type: 'sine' },
+            { freq: 622.25, duration: 0.6, type: 'sine' }
+        ];
+
+        const bass = [
+            { freq: 87.31, duration: 0.6, type: 'sine' },
+            { freq: 103.83, duration: 0.6, type: 'sine' },
+            { freq: 116.54, duration: 0.6, type: 'sine' },
+            { freq: 87.31, duration: 0.6, type: 'sine' },
+            { freq: 103.83, duration: 0.6, type: 'sine' },
+            { freq: 116.54, duration: 0.6, type: 'sine' },
+            { freq: 130.81, duration: 0.6, type: 'sine' },
+            { freq: 87.31, duration: 0.6, type: 'sine' }
+        ];
+
+        const pulse = [
+            { freq: 65.41, duration: 0.15, type: 'square' },
+            { freq: 0, duration: 0.15, type: 'square' },
+            { freq: 65.41, duration: 0.1, type: 'square' },
+            { freq: 0, duration: 0.2, type: 'square' }
+        ];
+
+        function playNote(freq, duration, type, volume = 0.4) {
+            if (freq <= 0) return;
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+
+            oscillator.type = type;
+            oscillator.frequency.setValueAtTime(freq, ctx.currentTime);
+
+            gainNode.gain.setValueAtTime(0, ctx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(volume, ctx.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(volume * 0.5, ctx.currentTime + duration * 0.7);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(reverb);
+            reverb.connect(ctx.destination);
+
+            oscillator.start();
+            oscillator.stop(ctx.currentTime + duration);
+        }
+
+        function startBackgroundMusic() {
+            if (isMusicPlaying) return;
+            isMusicPlaying = true;
+
+            let step = 0;
+            
+            function playNextLayer() {
+                if (!isMusicPlaying) return;
+                
+                if (step < mainMelody.length) {
+                    playNote(mainMelody[step].freq, mainMelody[step].duration, mainMelody[step].type, 0.4);
+                }
+
+                const cpIndex = Math.floor(step / 2) % counterpoint.length;
+                playNote(counterpoint[cpIndex].freq, counterpoint[cpIndex].duration, counterpoint[cpIndex].type, 0.2);
+
+                if (step % 2 === 0) {
+                    const bassIndex = Math.floor(step / 2) % bass.length;
+                    playNote(bass[bassIndex].freq, bass[bassIndex].duration, bass[bassIndex].type, 0.6);
+                }
+
+                const pulseIndex = step % pulse.length;
+                playNote(pulse[pulseIndex].freq, pulse[pulseIndex].duration, pulse[pulseIndex].type, 0.3);
+
+                step = (step + 1) % Math.max(mainMelody.length, counterpoint.length * 2, bass.length * 2);
+                
+                musicInterval = setTimeout(playNextLayer, mainMelody[step % mainMelody.length].duration * 500);
+            }
+            
+            playNextLayer();
+        }
+
+        function stopBackgroundMusic() {
+            isMusicPlaying = false;
+            if (musicInterval) {
+                clearTimeout(musicInterval);
+                musicInterval = null;
+            }
+        }
+
+        // Game Logic
+        let sequence = [];
+        let playerSequence = [];
+        let gameActive = false;
+        let isPlayersTurn = false;
+        let round = 0;
+        let lives = 5;
+        let inputEnabled = true;
+        let welcomeAnimationInterval = null;
+
+        function createTone(freq, duration) {
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+
+            oscillator.type = 'square';
+            oscillator.frequency.setValueAtTime(freq, ctx.currentTime);
+            
+            gainNode.gain.setValueAtTime(0.5, ctx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
+            
+            oscillator.start();
+            oscillator.stop(ctx.currentTime + duration);
+        }
+
+        function playFailSound() {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(180, ctx.currentTime);
+            osc.frequency.linearRampToValueAtTime(70, ctx.currentTime + 0.4);
+            
+            gain.gain.setValueAtTime(0.5, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            
+            osc.start();
+            osc.stop(ctx.currentTime + 0.4);
+        }
+
+        function playSuccessSound() {
+            const osc1 = ctx.createOscillator();
+            const osc2 = ctx.createOscillator();
+            const gain = ctx.createGain();
+            
+            osc1.type = 'sine';
+            osc2.type = 'sine';
+            osc1.frequency.setValueAtTime(523.25, ctx.currentTime);
+            osc2.frequency.setValueAtTime(659.25, ctx.currentTime);
+            
+            gain.gain.setValueAtTime(0.4, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+            
+            osc1.connect(gain);
+            osc2.connect(gain);
+            gain.connect(ctx.destination);
+            
+            osc1.start();
+            osc2.start();
+            osc1.stop(ctx.currentTime + 0.5);
+            osc2.stop(ctx.currentTime + 0.5);
+        }
+
+        function startWelcomeAnimation() {
+            stopWelcomeAnimation();
+            
+            let currentPad = 0;
+            welcomeAnimationInterval = setInterval(() => {
+                if (!gameActive) {
+                    const pad = document.getElementById(`pad${currentPad}`);
+                    if (pad) {
+                        pad.classList.add('welcome-flash');
+                        setTimeout(() => {
+                            pad.classList.remove('welcome-flash');
+                        }, 400);
+                    }
+                    currentPad = (currentPad + 1) % 4;
+                }
+            }, 200);
+        }
+
+        function stopWelcomeAnimation() {
+            if (welcomeAnimationInterval) {
+                clearInterval(welcomeAnimationInterval);
+                welcomeAnimationInterval = null;
+            }
+            PADS.forEach(padId => {
+                const pad = document.getElementById(`pad${padId}`);
+                if (pad) {
+                    pad.classList.remove('welcome-flash');
+                }
+            });
+        }
+
+        function getSoundDuration() {
+            const startDur = 0.4;
+            const minDur = 0.2;
+            const step = 0.02;
+            return Math.max(startDur - (round * step), minDur);
+        }
+
+        function flashGameOver() {
+            PADS.forEach(padId => {
+                const pad = document.getElementById(`pad${padId}`);
+                if (pad) {
+                    pad.classList.add('game-over-flash');
+                    setTimeout(() => {
+                        pad.classList.remove('game-over-flash');
+                    }, 2000);
+                }
+            });
+        }
+
+        function updateUI() {
+            document.getElementById('score').textContent = round;
+            document.getElementById('lives').textContent = '♥'.repeat(lives) + '♡'.repeat(5 - lives);
+        }
+
+        function activatePad(padId) {
+            const pad = document.getElementById(`pad${padId}`);
+            if (pad) {
+                pad.classList.add('active');
+                setTimeout(() => pad.classList.remove('active'), 200);
+            }
+        }
+
+        function startGame() {
+            gameActive = true;
+            sequence = [];
+            playerSequence = [];
+            round = 0;
+            lives = 5;
+            inputEnabled = true;
+            
+            stopWelcomeAnimation();
+            stopBackgroundMusic();
+            
+            const t = translations[currentLang];
+            document.getElementById('startButton').textContent = t.restart;
+            document.getElementById('gameContainer').classList.remove('success-glow', 'error-shake');
+            
+            updateUI();
+            nextRound();
+        }
+
+        function nextRound() {
+            round++;
+            isPlayersTurn = false;
+            playerSequence = [];
+            inputEnabled = false;
+            
+            const t = translations[currentLang];
+            document.getElementById('score').textContent = round;
+            document.getElementById('message').textContent = t.listening;
+            
+            sequence.push(Math.floor(Math.random() * 4));
+            playSequence();
+        }
+
+        function playSequence() {
+            let delay = 0;
+            const duration = getSoundDuration();
+            
+            sequence.forEach((padId) => {
+                setTimeout(() => {
+                    activatePad(padId);
+                    createTone(FREQUENCIES[padId], duration);
+                }, delay);
+                delay += (duration * 1000) + BASE_DELAY;
+            });
+
+            setTimeout(() => {
+                isPlayersTurn = true;
+                playerSequence = [];
+                inputEnabled = true;
+                const t = translations[currentLang];
+                document.getElementById('message').textContent = t.yourTurn;
+            }, delay + 50);
+        }
+
+        function handlePlayerClick(padId) {
+            if (!gameActive || !isPlayersTurn || !inputEnabled) return;
+
+            activatePad(padId);
+            createTone(FREQUENCIES[padId], 0.15);
+            
+            const currentIndex = playerSequence.length;
+            playerSequence.push(padId);
+            
+            if (playerSequence[currentIndex] !== sequence[currentIndex]) {
+                handleMistake();
+                return;
+            }
+
+            if (playerSequence.length === sequence.length) {
+                handleSuccess();
+            }
+        }
+        
+        function handleSuccess() {
+            isPlayersTurn = false;
+            inputEnabled = false;
+            playSuccessSound();
+            const t = translations[currentLang];
+            document.getElementById('message').textContent = t.success;
+            document.getElementById('gameContainer').classList.add('success-glow');
+            
+            setTimeout(() => {
+                document.getElementById('gameContainer').classList.remove('success-glow');
+                nextRound();
+            }, 800);
+        }
+
+        function handleMistake() {
+            inputEnabled = false;
+            isPlayersTurn = false;
+            
+            lives--;
+            playFailSound();
+            const t = translations[currentLang];
+            document.getElementById('message').textContent = `${t.mistake} ${lives}. ${t.repeating}`;
+            document.getElementById('gameContainer').classList.add('error-shake');
+            updateUI();
+            
+            setTimeout(() => {
+                document.getElementById('gameContainer').classList.remove('error-shake');
+            }, 400);
+
+            if (lives <= 0) {
+                gameOver();
+                return;
+            }
+
+            setTimeout(() => {
+                playerSequence = [];
+                const t = translations[currentLang];
+                document.getElementById('message').textContent = t.repeatSequence;
+                setTimeout(() => playSequence(), 1000);
+            }, 1200);
+        }
+
+        function gameOver() {
+            gameActive = false;
+            inputEnabled = false;
+            const t = translations[currentLang];
+            document.getElementById('message').textContent = `${t.gameOver} ${round - 1}`;
+            document.getElementById('startButton').textContent = t.start;
+            
+            flashGameOver();
+            
+            setTimeout(() => {
+                startWelcomeAnimation();
+                startBackgroundMusic();
+            }, 2500);
+        }
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            PADS.forEach(index => {
+                const pad = document.getElementById(`pad${index}`);
+                if (pad) {
+                    const handler = () => handlePlayerClick(index);
+                    pad.addEventListener('click', handler);
+                    pad.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        handler();
+                    });
+                }
+            });
+
+            document.getElementById('startButton').addEventListener('click', startGame);
+            
+            // Language switcher
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    updateLanguage(btn.dataset.lang);
+                });
+            });
+            
+            updateUI();
+            updateLanguage('en');
+            
+            setTimeout(() => {
+                startWelcomeAnimation();
+                startBackgroundMusic();
+            }, 500);
+        });
+
+        // Initialize audio on first click
+        document.addEventListener('click', function initAudioOnClick() {
+            if (ctx.state === 'suspended') {
+                ctx.resume();
+            }
+            document.removeEventListener('click', initAudioOnClick);
+        });
+    </script>
+</body>
+</html>
