@@ -1,69 +1,49 @@
 # 🎮 Cyber Sequence // 2085
 
-A cyberpunk memory game with neon visuals and procedural music.\
-Футуристична кіберпанкова гра на пам'ять з неоновими візуалами та procedural музикою.
+A cyberpunk memory game with neon visuals and procedural music.  
+Футуристична гра на пам’ять з неоновими візуалами та procedural музикою.
 
-English • Українська\
-Play Now • Features • How to Play • Installation
+[English](#english) | [Українська](#українська)  
+[Play Now](#play-now) | [Features](#features) | [How to Play](#how-to-play) | [Installation](#installation)
 
-![CYBER SEQUENCE // 2085](Screenshot.png)\
+![Screenshot](Screenshot.png)  
 
 
----
+## Features / Фічі {#features}
+- 🎨 Neon design, responsive / Неоновий дизайн, адаптивний  
+- 🎵 Procedural soundtrack / Procedural саундтрек  
+- 🎮 Simon-style, 5 lives / Стиль Simon, 5 життів  
+- 🌐 EN/UK support / Підтримка EN/UK  
+- 📱 Browser-based / У браузері  
 
-## 🌟 Features / Фічі {#features}
+## How to Play / Як грати {#how-to-play}
+1. Watch the sequence / Спостерігай послідовність  
+2. Repeat by clicking / Повтори кліками  
+3. It grows, speeds up / Вона росте, прискорюється  
+4. 5 lives — stay sharp! / 5 життів — будь уважним!  
 
-- **🎨 Design / Дизайн**: Neon colors, animations, responsive for all devices / Неонові кольори, анімації, адаптивність для всіх пристроїв
-- **🎵 Music / Музика**: Dynamic electronic soundtrack / Динамічний електронний саундтрек
-- **🎮 Gameplay / Геймплей**: Simon-style memory game, 5 lives / Гра на пам'ять як Simon, 5 життів
-- **🌐 Languages / Мови**: English & Ukrainian, easy switch / Англійська та українська, легке перемикання
-- **📱 Platform / Платформа**: Browser-based, no install / У браузері, без інсталяції
+**Controls / Керування**: Click pads, switch EN/UK top-right, start button.  
+Клік по панелях, перемикання мови вгорі праворуч, кнопка старту.
 
-## 🎯 How to Play / Як грати {#how-to-play}
+## Play Now / Грайте зараз {#play-now}
+[Play Demo](https://dneese.github.io/cyber-sequence/)
 
-1. Watch the pads light up / Спостерігай, як загоряються панелі
-2. Repeat the sequence by clicking / Повтори послідовність кліками
-3. Sequence grows and speeds up / Послідовність росте і прискорюється
-4. 5 lives — don’t fail! / 5 життів — не схиб!
-
-**Controls / Керування**:
-
-- Click/tap pads / Клік/тап по панелях
-- Switch language (EN/UK) in top-right / Перемикай мову (EN/UK) у правому верхньому куті
-- Start button to begin / Кнопка "Старт" для початку
-
-**Tips / Поради**: Play with sound on, stay focused! / Грай зі звуком, будь уважним!
-
-## 🚀 Play Online / Грайте онлайн {#play-online}
-
-- **Online**: Play Demo https://dneese.github.io/cyber-sequence/
-- **Local**: Open `index.html` in a browser / Відкрий `index.html` у браузері
-
-## 💻 Installation / Інсталяція {#installation}
-
+## Installation / Інсталяція {#installation}
 ```bash
-# Clone the repo / Клонуй репо
 git clone https://github.com/dneese/cyber-sequence.git
 cd cyber-sequence
-
-# Open index.html or run server / Відкрий index.html або запусти сервhttps://dneese.github.io/cyber-sequence/m http.server 8000  # Visit http://localhost:8000
+python -m http.server 8000  # http://localhost:8000
 ```
 
-## 🤝 Contributing / Співпраця {#contributing}
+## Contributing / Співпраця {#contributing}
+Fork, edit, PR. Ideas: languages, themes.  
+Форкни, зміни, PR. Ідеї: мови, теми.
 
-Fork, make changes, submit a PR! Ideas: new languages, themes, music.\
-Форкни, вноси зміни, кидай PR! Ідеї: нові мови, теми, музика.
+## License / Ліцензія {#license}
+MIT — see [LICENSE](LICENSE).  
+Copyright (c) 2025 Dneese.
 
-## 📝 License / Ліцензія {#license}
-
-MIT License — see LICENSE.\
-Copyright (c) 2025 DNeese.
-
-## 👨‍💻 Author / Автор {#author}
-
-DNeese
+## Author / Автор {#author}
+[DNeese](https://github.com/dneese)
 
 Made with ❤️ in neon 2085 / Зроблено з ❤️ у неоні 2085.
-
-⬆ Back to Top\
-English • Українська
